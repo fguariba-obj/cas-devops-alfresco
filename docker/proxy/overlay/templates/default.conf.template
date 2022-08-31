@@ -1,0 +1,92 @@
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+
+  return 301 https://$host$request_uri;
+}
+
+server {
+  listen ${PROXY_PORT} ssl default_server;
+  listen [::]:${PROXY_PORT} ssl default_server;
+
+  ssl_certificate /etc/nginx/pki/proxy-crt.pem;
+  ssl_certificate_key /etc/nginx/pki/proxy-key.pem;
+
+  client_max_body_size 0;
+
+  set $allowOriginSite *;
+
+  # Set IPs of trusted downstream proxies:
+  ${PROXY_REAL_IP_FROM}
+
+  # Get remote address from X-Forwarded-For header:
+  ${PROXY_REAL_IP_HEADER}
+
+  proxy_pass_request_headers on;
+  proxy_pass_header Set-Cookie;
+
+  proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
+  proxy_redirect off;
+  proxy_buffering off;
+
+  include /etc/nginx/proxy-headers.conf;
+
+  proxy_pass_header Set-Cookie;
+
+  access_log off;
+
+  # Protect access to SOLR APIs
+  location ~ ^(/.*/service/api/solr/.*)$ {return 403;}
+  location ~ ^(/.*/s/api/solr/.*)$ {return 403;}
+  location ~ ^(/.*/wcservice/api/solr/.*)$ {return 403;}
+  location ~ ^(/.*/wcs/api/solr/.*)$ {return 403;}
+
+  location ~ ^(/.*/proxy/alfresco/api/solr/.*)$ {return 403 ;}
+  location ~ ^(/.*/-default-/proxy/alfresco/api/.*)$ {return 403;}
+
+  # Configure an optional async DNS resolver to be able to resolve host names after nginx has
+  # started. Note that this is required to be able to resolve host names assigned to variables.
+  ${PROXY_RESOLVER}
+
+  location / {
+    # Use a variable to be able to resolve the host name after nginx has started.
+    set $proxy_pass_url ${PROXY_PASS_URL_ALFRESCO_REPO};
+    proxy_pass $proxy_pass_url;
+  }
+
+  location /alfresco/ {
+    # Use a variable to be able to resolve the host name after nginx has started.
+    set $proxy_pass_url ${PROXY_PASS_URL_ALFRESCO_REPO};
+    proxy_pass $proxy_pass_url;
+  }
+
+  location /share/ {
+    # Include the common proxy headers since they are not inherited if we use proxy_set_header here.
+    include /etc/nginx/proxy-headers.conf;
+
+    # Fix referer header to avoid: "Possible CSRF attack noted when asserting referer header"
+    set $referer $http_referer;
+    if ($http_referer ~ "^${PROXY_PROTOCOL}:\/\/${PROXY_HOST}(${PROXY_PORT})?(/.+)$") {
+      set $referer http://$host$2;
+    }
+
+    proxy_set_header Referer $referer;
+
+    # Fix origin header to avoid: "Possible CSRF attack noted when asserting origin header"
+    set $origin $http_origin;
+    if ($http_origin ~ "^${PROXY_PROTOCOL}:\/\/${PROXY_HOST}(${PROXY_PORT})?$") {
+      set $origin http://$host;
+    }
+
+    proxy_set_header Origin $origin;
+
+    # Use a variable to be able to resolve the host name after nginx has started (required in case
+    # share has not been started, e.g. when testing only specific containers).
+    set $proxy_pass_url http://share:8080;
+    proxy_pass $proxy_pass_url;
+
+    # Fix redirects containing locations with http:// (e.g. https://$host/share/ ->
+    # http://$host/share/page/).
+    proxy_redirect http://$host https://$host;
+  }
+}

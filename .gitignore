@@ -1,0 +1,18 @@
+.idea/
+.settings/
+target/
+util/pki/files/
+
+**/*-min.js
+# See comment in share/pom.xml...
+!**/dropzone-min.js
+
+.DS_Store
+.classpath
+.factorypath
+.project
+*.log
+*.iml
+~$*
+
+dependency-reduced-pom.xml

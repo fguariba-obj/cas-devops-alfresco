@@ -1,0 +1,10 @@
+version: '3.6'
+
+services:
+  share:
+    restart: always
+
+  proxy:
+    volumes:
+      - /opt/cas/proxy/pki:/etc/nginx/pki:ro
+    restart: always

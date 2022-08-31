@@ -1,0 +1,38 @@
+version: '3.6'
+
+volumes:
+  alfresco-data:
+  db-data:
+  search-data:
+
+services:
+  db:
+    volumes:
+      - db-data:/var/lib/postgresql/data:cached
+    environment:
+      - POSTGRES_PASSWORD=alfresco
+    ports:
+      - "5432:5432"
+
+  openldap:
+    image: cas-devops-openldap
+    build: docker/openldap
+    environment:
+      - LDAP_DOMAIN=cas-devops.ch
+      - LDAP_ORGANISATION=CAS-DEVOPS
+    ports:
+      - "389:389"
+
+  alfresco:
+    depends_on:
+      - openldap
+      - db
+      - proxy
+    ports:
+      - "5005:5005"
+
+  share:
+    depends_on:
+      - proxy
+    ports:
+      - "5006:5005"

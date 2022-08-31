@@ -1,0 +1,24 @@
+version: '3.6'
+
+services:
+  alfresco:
+    image: ${DOCKER_IMAGE_PREFIX}alfresco
+    build:
+      context: platform
+      args:
+        ALFRESCO_REPO_VERSION: ${ALFRESCO_REPO_VERSION}
+
+  share:
+    image: ${DOCKER_IMAGE_PREFIX}share
+    build:
+      context: share
+      args:
+        ALFRESCO_SHARE_VERSION: ${ALFRESCO_SHARE_VERSION}
+
+  proxy:
+    image: ${DOCKER_IMAGE_PREFIX}proxy
+    build: docker/proxy
+
+  db:
+    image: ${DOCKER_IMAGE_PREFIX}postgres
+    build: docker/postgres

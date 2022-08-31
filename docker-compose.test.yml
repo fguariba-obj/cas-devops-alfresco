@@ -1,0 +1,43 @@
+version: '3.6'
+
+services:
+  db:
+    image: ${DOCKER_IMAGE_PREFIX}postgres
+    volumes:
+      - /Data/db-data:/var/lib/postgresql/data:cached
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=alfresco
+
+  proxy:
+    volumes:
+      - /opt/cas-devops/proxy/pki:/etc/nginx/pki:ro
+    restart: always
+
+  alfresco:
+    depends_on:
+      - proxy
+    restart: always
+
+  activemq:
+    restart: always
+
+  search:
+    restart: always
+
+  service-sync:
+    restart: always
+
+  shared-file-store:
+    restart: always
+
+  transform-core-aio:
+    restart: always
+
+  transform-router:
+    restart: always
+
+  share:
+    depends_on:
+      - proxy
+    restart: always

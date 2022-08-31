@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+  alfresco:
+    restart: always
+    ports:
+      - "8080:8080"
+
+  activemq:
+    restart: always
+
+  search:
+    restart: always
+
+  service-sync:
+    restart: always
+
+  shared-file-store:
+    restart: always
+
+  transform-core-aio:
+    restart: always
+
+  transform-router:
+    restart: always

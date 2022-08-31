@@ -1,0 +1,85 @@
+dn: ou=CAS,dc=cas-devops,dc=ch
+objectClass: organizationalUnit
+objectClass: top
+ou: CAS
+
+dn: ou=Groups,ou=CAS,dc=cas-devops,dc=ch
+objectClass: organizationalUnit
+objectClass: top
+ou: Groups
+
+dn: ou=Users,ou=CAS,dc=cas-devops,dc=ch
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: ou=External,ou=Users,ou=CAS,dc=cas-devops,dc=ch
+objectClass: organizationalUnit
+objectClass: top
+ou: External
+
+dn: cn=G_DevOps,ou=Groups,ou=CAS,dc=cas-devops,dc=ch
+objectClass: groupOfNames
+objectClass: top
+cn: G_DevOps
+member: cn=Francisco Guariba,ou=External,ou=Users,ou=CAS,dc=cas-devops,dc=ch
+
+dn: cn=Francisco Guariba,ou=External,ou=Users,ou=CAS,dc=cas-devops,dc=ch
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: simpleSecurityObject
+objectClass: top
+cn: Francisco Guariba
+givenName: Francisco
+l: CH
+mail: fguariba@object.ch
+sn: Guariba
+title: Software Engineer
+uid: fguariba.ext
+userPassword: {SSHA}qJOf3zQk9k3nOmOsFRooGQibkquhGTIzsmoi4A==
+
+dn: cn=Norman Zuske,ou=External,ou=Users,ou=CAS,dc=cas-devops,dc=ch
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: simpleSecurityObject
+objectClass: top
+cn: Norman Zuske
+givenName: Norman
+l: DE
+mail: nzuske.ext@object.ch
+sn: Zuske
+title: Senior Software Engineer
+uid: nzuske.ext
+userPassword: {SSHA}qJOf3zQk9k3nOmOsFRooGQibkquhGTIzsmoi4A==
+
+dn: cn=Stephan Poschetzky,ou=External,ou=Users,ou=CAS,dc=cas-devops,dc=ch
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: simpleSecurityObject
+objectClass: top
+cn: Stephan Poschetzky
+givenName: Stephan
+l: DE
+mail: sposchetzky.ext@object.ch
+sn: Poschetzky
+title: CTO
+uid: sposchetzky
+userPassword: {SSHA}qJOf3zQk9k3nOmOsFRooGQibkquhGTIzsmoi4A==
+
+dn: cn=Test User,ou=External,ou=Users,ou=CAS,dc=cas-devops,dc=ch
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: simpleSecurityObject
+objectClass: top
+cn: Test User
+givenName: Test
+l: DE
+mail: test.user@object.ch
+sn: User
+title: Tester
+uid: tuser
+userPassword: {SSHA}qJOf3zQk9k3nOmOsFRooGQibkquhGTIzsmoi4A==

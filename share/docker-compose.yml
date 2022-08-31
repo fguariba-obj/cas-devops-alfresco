@@ -1,0 +1,32 @@
+version: '3.6'
+
+services:
+  share:
+    image: ${DOCKER_IMAGE_PREFIX}share
+    environment:
+      REPO_HOST: ${SHARE_REPO_HOST}
+      REPO_PORT: ${SHARE_REPO_PORT}
+      JAVA_OPTS: "
+        -Dalfresco.host=${PROXY_HOST}
+        -Dalfresco.port=${PROXY_PORT}
+        -Dalfresco.protocol=${PROXY_PROTOCOL}
+        -Dalfresco.context=alfresco
+        ${JVM_MEM_ALFRESCO_SHARE}
+        ${JVM_DEBUG}"
+
+  proxy:
+    image: ${DOCKER_IMAGE_PREFIX}proxy
+    environment:
+      - NGINX_HOST=${PROXY_HOST}
+      - NGINX_PORT=${PROXY_PORT}
+      - PROXY_HOST
+      - PROXY_PORT
+      - PROXY_PROTOCOL
+      - PROXY_REAL_IP_FROM
+      - PROXY_REAL_IP_HEADER
+      - PROXY_PASS_URL_ALFRESCO_REPO
+      - PROXY_RESOLVER
+    ports:
+      # The default HTTP port redirects to the HTTPS port (specified by variable PROXY_PORT).
+      - "80:80"
+      - "${PROXY_PORT}:${PROXY_PORT}"
