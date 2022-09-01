@@ -8,6 +8,12 @@
   <prerequisites>
     <maven>3.3.0</maven>
   </prerequisites>
+  <scm>
+    <connection>scm:git:${project.scm.url}</connection>
+    <developerConnection>scm:git:${project.scm.url}</developerConnection>
+    <url>git@github.com:fguariba-obj/cas-devops-alfresco.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
     <!-- Alfresco Maven Plugin version to use -->
@@ -49,33 +55,43 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
       <version>1.10.19</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <scope>test</scope>
     </dependency>
+
     <!-- The main Alfresco Repo dependency for compiling Java code in src/main/java -->
     <dependency>
       <groupId>${alfresco.groupId}</groupId>
       <artifactId>alfresco-remote-api</artifactId>
       <scope>provided</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-release-plugin</artifactId>
+      <version>3.0.0-M6</version>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
     <dependencies>
       <!-- This will import the dependencyManagement for all artifacts in the selected Alfresco platform.
-                 NOTE: You still need to define dependencies in your POM, but you can omit version as
-                       it's enforced by this dependencyManagement.
-                 NOTE: It defaults to the latest version this SDK pom has been tested with,
-                       but alfresco version can/should be overridden in your project's pom
-            -->
+           NOTE: You still need to define dependencies in your POM, but you can omit version as
+                 it's enforced by this dependencyManagement.
+           NOTE: It defaults to the latest version this SDK pom has been tested with,
+                 but alfresco version can/should be overridden in your project's pom
+      -->
       <dependency>
         <groupId>${alfresco.groupId}</groupId>
         <artifactId>${alfresco.bomDependencyArtifactId}</artifactId>
@@ -112,13 +128,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!--
-            Build an AMP if 3rd party libs are needed by the extensions
-            JARs are the default artifact produced in your modules, if you want to build an amp for each module
-            you have to enable this plugin and inspect the src/main/assembly.xml file if you want to customize
-            the layout of your AMP. The end result is that Maven will produce both a JAR file and an AMP with your
-            module.
-        -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
