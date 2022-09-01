@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.cas.devops</groupId>
   <artifactId>cas-devops-alfresco</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <prerequisites>
     <maven>3.3.0</maven>
@@ -12,10 +12,15 @@
     <connection>scm:git:${project.scm.url}</connection>
     <developerConnection>scm:git:${project.scm.url}</developerConnection>
     <url>git@github.com:fguariba-obj/cas-devops-alfresco.git</url>
-    <tag>v1.0.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
+    <!-- SCM ssh://server_name[:port]/path_to_repository -->
+    <project.scm.url>ssh://github.com/fguariba-obj/cas-devops-alfresco</project.scm.url>
+    <project.scm.id>github</project.scm.id>
+    <maven-release-plugin.version>3.0.0-M6</maven-release-plugin.version>
+
     <!-- Alfresco Maven Plugin version to use -->
     <alfresco.sdk.version>4.4.0</alfresco.sdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -255,12 +260,25 @@
         </executions>
       </plugin>
 
+      <!-- Maven Release Plug-in -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.0.0-M6</version>
+        <version>${maven-release-plugin.version}</version>
         <configuration>
+          <scmCommentPrefix>[ci skip]</scmCommentPrefix>
           <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
+      </plugin>
+
+      <!-- Maven SCM Plugin -->
+      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-scm-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.13.0</version>
+        <configuration>
+          <connectionType>connection</connectionType>
         </configuration>
       </plugin>
     </plugins>
@@ -286,6 +304,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>java11</id>
       <activation>
