@@ -49,3 +49,4 @@ jobs:
           release-branch-name: "main"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
           maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Ddockerfile.skip -DdockerCompose.skip"
+          maven-servers: ${{ secrets.MAVEN_REPO_SERVERS }}
