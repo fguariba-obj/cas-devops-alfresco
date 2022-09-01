@@ -4,5 +4,14 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <bean id="action-assigned-to"	class="ch.object.repo.actions.AssignedToActionExecuter" parent="action-executer">
+        <property name="adhocPropertiesAllowed" value="true" />
+        <property name="nodeService" ref="NodeService" />
+        <property name="authorityService" ref="AuthorityService" />
+        <property name="ignoreLock" value="false" />
+    </bean>
 
+    <bean id="action-assigned-to-constraint-association" class="ch.object.repo.actions.AssociationParameterConstraint" parent="action-constraint">
+        <property name="dictionaryService" ref="DictionaryService" />
+    </bean>
 </beans>
