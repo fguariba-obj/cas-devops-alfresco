@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.cas.devops</groupId>
   <artifactId>cas-devops-alfresco</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <prerequisites>
     <maven>3.3.0</maven>
@@ -16,6 +16,11 @@
   </scm>
 
   <properties>
+    <!-- SCM ssh://server_name[:port]/path_to_repository -->
+    <project.scm.url>ssh://github.com/fguariba-obj/cas-devops-alfresco</project.scm.url>
+    <project.scm.id>github</project.scm.id>
+    <maven-release-plugin.version>3.0.0-M6</maven-release-plugin.version>
+
     <!-- Alfresco Maven Plugin version to use -->
     <alfresco.sdk.version>4.4.0</alfresco.sdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +49,7 @@
     <acs.port>8080</acs.port>
     <acs.debug.port>8888</acs.debug.port>
     <!-- This parameter is only required for those cases in which ACS is not exposed in http://localhost:8080/alfresco (i.e. Windows Docker) -->
-    <test.acs.endpoint.path/>
+    <test.acs.endpoint.path />
   </properties>
 
   <!-- Libs used in Unit and Integration tests -->
@@ -74,13 +79,6 @@
       <groupId>${alfresco.groupId}</groupId>
       <artifactId>alfresco-remote-api</artifactId>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-release-plugin</artifactId>
-      <version>3.0.0-M6</version>
     </dependency>
   </dependencies>
 
@@ -261,6 +259,28 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Maven Release Plug-in -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
+        <configuration>
+          <scmCommentPrefix>[ci skip]</scmCommentPrefix>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
+      </plugin>
+
+      <!-- Maven SCM Plugin -->
+      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-scm-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.13.0</version>
+        <configuration>
+          <connectionType>connection</connectionType>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -284,6 +304,7 @@
         </plugins>
       </build>
     </profile>
+
     <profile>
       <id>java11</id>
       <activation>

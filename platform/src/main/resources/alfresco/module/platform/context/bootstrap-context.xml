@@ -5,4 +5,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+	<bean id="object-action-assigned-to-resourceBundles" parent="actionResourceBundles">
+		<property name="resourceBundles">
+			<list>
+				<value>alfresco.module.${project.artifactId}.messages.action-assigned-to</value>
+			</list>
+		</property>
+	</bean>
 </beans>
